@@ -1,0 +1,28 @@
+src
+├── __init__.py
+└── v1
+    ├── __init__.py
+    ├── config
+    │   ├── __init__.py
+    │   ├── config.py
+    │   └── logging_config.py
+    ├── main.py
+    ├── services
+    │   ├── guardrails.py
+    │   ├── memory_engine
+    │   │   ├── __init__.py
+    │   │   ├── retrieval_memory.py
+    │   │   └── summary_memory.py
+    │   ├── model.py
+    │   └── response_handler.py
+    └── utils
+        ├── __init__.py
+        ├── database
+        │   ├── __init__.py
+        │   └── supabase_chat_history.py
+        ├── guardrails_prompts.py
+        ├── modelclass.py
+        ├── prompts.py
+        └── text_chunking.py
+
+7 directories, 19 files

@@ -1,0 +1,17 @@
+version: "3"
+services:
+  copilotai:
+    env_file: prod.env
+    build:
+      context: .
+      args:
+        - ENVFILE
+      dockerfile: Dockerfile
+    container_name: copilotai
+    image: copilotai
+    restart: always
+    ports:
+    - "5190:8000"
+    volumes:
+    - /var/www/html/app
+    - /var/logs/error.log:/var/log/app/error.log

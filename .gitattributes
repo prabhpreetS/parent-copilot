@@ -1,0 +1,10 @@
+# Environment files - use ours strategy to prevent merge conflicts
+*.env merge=ours
+prod.env merge=ours
+staging.env merge=ours
+dev.env merge=ours
+ 
+# Alternative: You can also use binary to prevent any merge attempts
+# *.env binary
+# prod.env binary  
+# staging.env binary

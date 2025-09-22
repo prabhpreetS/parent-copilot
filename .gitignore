@@ -1,0 +1,15 @@
+.env
+trial.ipynb
+
+venv/
+pcopilotenv/
+.vscode/
+__pycache__/
+folder_structure.txt
+.gitignore
+logs/
+*.log
+.cursor
+prod.env
+staging.env
+prod.env

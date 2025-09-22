@@ -1,0 +1,143 @@
+name: CI/CD Pipeline
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events to the development branch
+  push:
+    branches: [ v1_dev ]
+  pull_request:
+    branches: [ v1_dev ]
+
+permissions:
+    checks: write
+    contents: read
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This job sets up the Python environment and runs tests
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Environment variables needed for tests
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      TEST_USER_ID: ${{ secrets.TEST_USER_ID }}
+      PYTHONPATH: ${{ github.workspace }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Check for required secrets
+    - name: Check for required secrets
+      run: |
+        if [ -z "$SUPABASE_URL" ]; then
+          echo "Error: SUPABASE_URL secret is not set"
+          echo "Please add SUPABASE_URL to your GitHub repository secrets"
+          exit 1
+        fi
+        if [ -z "$SUPABASE_KEY" ]; then
+          echo "Error: SUPABASE_KEY secret is not set"
+          echo "Please add SUPABASE_KEY to your GitHub repository secrets"
+          exit 1
+        fi
+        if [ -z "$OPENAI_API_KEY" ]; then
+          echo "Error: OPENAI_API_KEY secret is not set"
+          echo "Please add OPENAI_API_KEY to your GitHub repository secrets"
+          exit 1
+        fi
+        echo "All required secrets are set"
+
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v3
+
+    # Sets up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'  # Specify the Python version you're using
+        cache: 'pip'  # Enable caching of pip packages
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov pytest-asyncio pytest-github-actions-annotate-failures
+
+    # Run tests and generate both coverage and junit reports
+    - name: Run tests
+      run: |
+        pytest tests/ -v --cov=./ --cov-report=term-missing --junitxml=pytest.xml
+
+    # Upload test results
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()  # Upload test results even if tests fail
+      with:
+        name: pytest-results
+        path: pytest.xml
+        retention-days: 30
+
+    # Publish Test Report
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v3
+      if: always()  # Publish test report even if tests fail
+      with:
+        report_paths: 'pytest.xml'
+        detailed_summary: true
+        include_passed: true
+
+  # This job runs linting checks
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: Install linting dependencies
+      run: |
+        pip install flake8 black isort
+
+    - name: Run linting checks
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        black . 
+        isort .
+
+  # Docker build job
+  docker-build:
+    needs: [test, lint]  # Only run if test and lint jobs succeed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          driver-opts: |
+            image=moby/buildkit:master
+            network=host
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          tags: parent-co-pilot:latest
+          load: true  # This makes the image available in the local Docker daemon
+
+  # Optional: Add deployment job here
+  # deploy:
+  #   needs: [test, lint]  # Only run if test and lint jobs succeed
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'  # Only deploy from main branch
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     # Add your deployment steps here
