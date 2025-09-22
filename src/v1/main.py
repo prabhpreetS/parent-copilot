@@ -39,7 +39,7 @@ from src.v1.version import __version__, API_TITLE, API_DESCRIPTION
 logger = setup_logging()
 
 # start the logging process
-logger.info("Starting Parent Co-Pilot API")
+logger.info("Starting LegalMind AI API")
 
 # FastAPI app instance with versioning
 app = FastAPI(
@@ -70,7 +70,7 @@ async def health_check():
     Simple health check endpoint to verify API is running
     """
     logger.info("Health check endpoint called")
-    return {"status": "healthy", "service": "parent-co-pilot", "version": __version__}
+    return {"status": "healthy", "service": "legalmind-ai", "version": __version__}
 
 
 # API for handling conversation responses

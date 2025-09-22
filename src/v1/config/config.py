@@ -15,7 +15,7 @@ SUPABASE_SUMMARY_TABLE_NAME = "chat_summaries"
 SUPABASE_SUMMARY_QUERY_NAME = "match_summaries"
 OPENAI_MODEL = "gpt-4.1-mini"
 LANGCHAIN_TRACING_V2 = "true"
-LANGCHAIN_PROJECT = "parentcopilot"
+LANGCHAIN_PROJECT = "legalmind-ai"
 LANGCHAIN_ENDPOINT = "https://api.smith.langchain.com"
 LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY")
 #

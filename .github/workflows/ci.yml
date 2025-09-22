@@ -130,7 +130,7 @@ jobs:
         with:
           context: .
           push: false
-          tags: parent-co-pilot:latest
+          tags: legalmind-ai:latest
           load: true  # This makes the image available in the local Docker daemon
 
   # Optional: Add deployment job here

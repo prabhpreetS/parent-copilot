@@ -1,10 +1,10 @@
-# Parent Co-Pilot
+# LegalMind AI
 
-A therapeutic AI assistant designed to support divorced parents by providing emotional guidance and support while referencing their divorce agreements.
+A therapeutic AI assistant designed to support divorced individuals by providing emotional guidance and legal support while referencing their divorce agreements.
 
 ## Overview
 
-Parent Co-Pilot AI Assistant is an API-based service that combines emotional intelligence with legal context awareness. The application helps divorced individuals navigate their emotions, understand their divorce agreements, and make informed decisions about co-parenting issues.
+LegalMind AI is an intelligent API-based service that combines emotional intelligence with legal context awareness. The application helps divorced individuals navigate their emotions, understand their divorce agreements, and make informed decisions about co-parenting and legal matters.
 
 ## Features
 
@@ -36,8 +36,8 @@ Parent Co-Pilot AI Assistant is an API-based service that combines emotional int
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/parent-co-pilot.git
-cd parent-co-pilot
+git clone https://github.com/prabhpreetS/legalmind-ai.git
+cd legalmind-ai
 ```
 
 2. Create a virtual environment:
@@ -67,8 +67,8 @@ uvicorn src.v1.main:app --reload
 ### Docker Deployment
 
 ```bash
-docker build -t parent-co-pilot .
-docker run -p 8000:8000 --env-file .env parent-co-pilot
+docker build -t legalmind-ai .
+docker run -p 8000:8000 --env-file .env legalmind-ai
 ```
 
 ## API Endpoints
@@ -96,8 +96,8 @@ Process a user message and return an AI response with relevant context.
 **Response:**
 ```json
 {
-  "response": "Based on your divorce agreement, each parent is entitled to two weeks of summer vacation time with the children...",
-  "relevant_contract_statements": "Summer Vacation: Each parent shall be entitled to two consecutive weeks of vacation time with the children during the summer break...",
+  "response": "Based on your divorce agreement, each party is entitled to two weeks of summer vacation time with the children...",
+  "relevant_contract_statements": "Summer Vacation: Each party shall be entitled to two consecutive weeks of vacation time with the children during the summer break...",
   "total_tokens": 450
 }
 ```

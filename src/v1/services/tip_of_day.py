@@ -59,7 +59,7 @@ async def tip_of_the_day(user_id):
         if not processed_response:
             logger.warning(f"No chat history found for user_id: {user_id}")
             # return "No chat history available to generate a personalized tip."
-            processed_response = "No chat history available. Please generate a random tip related to parenting after divorce"
+            processed_response = "No chat history available. Please generate a random tip related to legal and emotional wellness after divorce"
             
         totd_user_prompt = TIP_OF_THE_DAY_USER_PROMPT.format(summaries=processed_response)
         logger.debug(f"Generated prompt for tip of the day")
